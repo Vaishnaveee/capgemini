@@ -1,0 +1,30 @@
+package Assignments;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import Assignments.Candidate.Sort1;
+import Assignments.Candidate.Sort2;
+import Assignments.Candidate.Sort3;
+
+public class App1 {
+	public static void main (String[]args) {
+		
+		Sort1 p= new Sort1();
+		Sort2 q= new Sort2();
+		Sort3 r=new Sort3();
+		
+		List<Candidate> list=new ArrayList<>();
+		list.add(new Candidate(1,"harry ", 80000));
+		list.add(new Candidate(2,"ron ",40000));
+		list.add(new Candidate(3,"harmonie",35000));
+		list.add(new Candidate(4,"draco",25000));
+		list.add(new Candidate(5,"nevile",55000));
+		
+		System.out.println(p.getSorted(list));
+		System.out.println(q.getSortedSalary(list));
+		System.out.println(r.getSorted(list));
+	
+		
+}
+}

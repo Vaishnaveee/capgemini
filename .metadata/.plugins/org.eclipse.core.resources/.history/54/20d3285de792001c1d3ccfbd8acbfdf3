@@ -1,0 +1,120 @@
+package com.jpa.main.service;
+
+import java.util.List;
+import java.util.Scanner;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
+import com.jpa.main.model.Customer;
+
+import com.jpa.main.model.Product;
+
+import com.jpa.main.model.Vendor;
+
+public class ProductService {
+	
+	
+	Scanner sc;
+	EntityManager entityManager=null;
+	
+	public ProductService( EntityManager entityManager) {
+		
+		this.entityManager = entityManager;
+		sc = new Scanner(System.in);
+	}
+
+	
+	
+	
+	
+
+	public Product readProductInput(Product product) {
+		
+		System.out.println("Enter Name of Product : ");
+		String name = sc.next();
+		product.setName(name);
+		
+		
+		System.out.println("Enter Price of Product : ");
+		int price=sc.nextInt();
+		product.setPrice(price);
+		
+		System.out.println("Enter Vendor ID :");
+		int vendorId = sc.nextInt();
+		Vendor vendor = entityManager.find(Vendor.class, vendorId);//we call the vendor class through this,find method we get object vendor class
+		product.setVendor(vendor);
+		
+		
+		
+		
+		
+		return product;
+	}
+
+
+
+	public List<Product> fetchAllCustomers() {
+		
+		List<Product> list1 = entityManager.createQuery("select p from Product p", Product.class).getResultList();
+		return list1;
+
+	}
+
+	public void customerBuyProduct(int cid, int pid) {
+		Customer cobj = entityManager.find(Customer.class,cid);
+		Product pobj =   entityManager.find(Product.class,pid);
+		
+		List<Product> list =  cobj.getProduct();
+		list.add(pobj);
+		
+		cobj.setProduct(list);
+		
+		entityManager.persist(cobj);
+		
+	}
+
+
+
+
+
+
+	public List<Product> fetchProductByVendorId(int vidVal) {
+		
+		Query query= entityManager
+				.createQuery("select p from Product p join p.vendor v where v.id=:vid", Product.class);// normal select * prouct and vendor tables are not joint so we use joint where v.Id  v cha primary id get match 
+		query.setParameter("vid", vidVal);
+		
+		return query.getResultList();
+
+	}// No 9 vendor 
+
+
+
+
+
+
+	public List<Product> fetchProductByCustomerId(int cid) {
+		
+		Query query= entityManager
+				.createQuery("select p from Product p join p.customer c where c.id=:cid", Product.class);// normal select * product and vendor tables are not joint so we use joint where c.Id  c cha primary id get match 
+		query.setParameter("cid", cid);// 
+		
+		return query.getResultList();
+		
+		
+	}
+
+
+	public void deleteProduct(Product product) {
+		// TODO Auto-generated method stub
+		entityManager.remove(product);
+		
+	}
+
+	public Product getProductById(int pid) {
+		// TODO Auto-generated method stub
+		return entityManager.find(Product.class, pid);
+	}
+
+}

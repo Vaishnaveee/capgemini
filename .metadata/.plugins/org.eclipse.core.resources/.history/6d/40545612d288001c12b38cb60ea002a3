@@ -1,0 +1,43 @@
+package Assignments;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class RegexTest {
+public static void main(String[] args) {
+	 String str="Oppo+23400+4*Samsung+21900+2";
+	 List<product> list=new ArrayList<>();
+	 String [] s= str.split("\\+");
+	 for (String P : s) {
+		 String[] s1= P.split("\\*");
+		 System.out.println(s);
+		System.out.println(P);
+	 }
+	 
+}
+}
+class product{
+	String name;
+	double price;
+	int quantity;
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public double getPrice() {
+		return price;
+	}
+	public void setPrice(double price) {
+		this.price = price;
+	}
+	public int getQuantity() {
+		return quantity;
+	}
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+	
+}
+

@@ -1,0 +1,15 @@
+package com.jpa.main.service;
+
+import java.util.Scanner;
+
+import javax.persistence.EntityManager;
+
+public class CustomerService {
+	Scanner sc;
+	EntityManager entityManager = null;
+
+	public CustomerService(EntityManager entityManager) {
+		this.entityManager = entityManager;
+		sc = new Scanner(System.in);
+	}
+}

@@ -1,0 +1,47 @@
+package Assignments;
+
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
+
+import Assignments.Activity.Source;
+import junit.framework.Assert;
+
+public class SourceTest {
+
+	@Test
+	public void handleExceptionTest() {
+		Source s= new Source();
+		Activity a =new Activity(null,"pqr","+");
+		try {
+			s.handleException(a);
+		}
+		catch(Exception e) {
+			assertEquals("Null Values Found", e.getMessage());
+		}
+
+	     a= new Activity("abc",null, "+");
+	    try {
+	    	s.handleException(a);
+	    }
+	    catch(Exception e) {	
+	    	assertEquals("Null values found",e.getMessage());	
+	    }
+	    
+	    a= new Activity("abc","pqr", "*");
+	    try {
+	    	s.handleException(a);
+	    }
+	    catch(Exception e) {	
+	    	assertEquals("*",e.getMessage());	
+	    }
+	    a= new Activity("abc", "pqr", "-");
+	    try {
+	    	Assert.assertEquals("No Exception Found", s.handleException(a));
+	    }
+	    catch(Exception e) {
+	    assertEquals("+", e.getMessage());
+	}
+}
+	}
+}

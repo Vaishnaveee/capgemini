@@ -1,0 +1,25 @@
+package com.project;
+
+import java.util.List;
+	public class App {
+
+		public static void main(String[] args) {
+				DB db = new DB();
+			   System.out.println("welcome to the project!!!!!!!!!!!!");
+			   System.out.println("ALL STUDENT RECORDS");
+		       System.out.println("*********************");
+		       List<Project> list=db.fectchAllStudent();
+		       System.out.println("ID"+ "\t  " +"NAME"+"  \t"+"AGE"+"\t"+"AMOUNT"+"\t\t"+"POLICY");
+		    	System.out.println("---------------------------------------------------------------"); 
+		       for(Project stud:list) {
+		    	
+		       	System.out.println(stud.getId()+ "\t" +stud.getName()+"\t"+stud.getAge()+"\t"+stud.getAmount()+"\t\t"+stud.getPolicy());
+		       	
+		       }
+		       System.out.println("**********************"); 
+
+
+		}
+
+	}
+

@@ -1,0 +1,48 @@
+package com.jpa.main.service;
+
+import java.util.List;
+import java.util.Scanner;
+
+import javax.persistence.EntityManager;
+
+import com.jpa.main.model.Customer;
+
+public class CustomerService {
+	Scanner sc;
+	EntityManager entityManager = null;
+
+	public CustomerService(EntityManager entityManager) {
+		this.entityManager = entityManager;
+		sc = new Scanner(System.in);
+	}
+
+	public Customer readCustomerInput(Customer customer) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Customer getCustomerById(int eid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void updateCustomer(Customer e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void deleteCustomer(Customer e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public List<Customer> fetchAllCustomers() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<Customer> fetchPCustomerByProductId(int pidval) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+}

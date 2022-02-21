@@ -1,0 +1,27 @@
+package com.jpa.main.service;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
+
+import com.jpa.main.model.Product;
+
+public class VendorService {
+
+	private EntityManager entityManager;
+
+	public VendorService(EntityManager entityManager) {
+		this.entityManager = entityManager;
+	}
+
+	public void populate() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public List<Product> fetchproductByVendorId(int vidval) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

@@ -1,0 +1,44 @@
+package com.jpa.main;
+
+import java.util.Scanner;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
+
+import com.jpa.main.service.CustomerService;
+import com.jpa.main.service.ProductService;
+import com.jpa.main.service.VendorService;
+
+public class App {
+public static void main(String[] args) {
+	EntityManagerFactory entityFactory = null;
+	EntityManager entityManager = null;
+	
+	EntityTransaction transaction = null;
+	try {
+		entityFactory = Persistence.createEntityManagerFactory("mycompanydb");
+		entityManager = entityFactory.createEntityManager();
+		transaction = entityManager.getTransaction();
+		
+		Scanner sc = new Scanner(System.in);
+		CustomerService customerService = new 	CustomerService (entityManager);
+		ProductService productService = new ProductService(entityManager);
+		VendorService vendorService = new VendorService(entityManager);
+		
+	
+	
+	
+	
+	
+	} catch (Exception c) {
+			System.out.println(c);
+			transaction.rollback();
+	}
+	finally {
+		entityManager.close();
+		entityFactory.close();
+	}
+}
+}

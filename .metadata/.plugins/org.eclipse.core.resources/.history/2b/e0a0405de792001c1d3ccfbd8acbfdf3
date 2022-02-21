@@ -1,0 +1,250 @@
+package com.jpa.main;
+
+import java.util.List;
+import java.util.Scanner;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
+
+import com.jpa.main.model.Customer;
+
+import com.jpa.main.model.Product;
+import com.jpa.main.service.CustomerService;
+import com.jpa.main.service.ProductService;
+import com.jpa.main.service.VendorService;
+
+public class App {
+	public static void main(String[] args) {
+		
+			EntityManagerFactory entityFactory = null;// connect to persistence.xml
+			
+			EntityManager entityManager = null;//manage and perform operations 
+	
+			EntityTransaction transaction = null;//all operations in DB happen as atomic ...(not clear to me )
+			
+			try {
+				
+				entityFactory = Persistence.createEntityManagerFactory("jpaproject");
+				entityManager = entityFactory.createEntityManager();//  help of entity factory we create the entity manager
+				transaction = entityManager.getTransaction();// entity manager with the help  create the transaction
+				
+				Scanner sc = new Scanner(System.in);
+				CustomerService customerService= new  CustomerService(entityManager);//create objects of class
+				ProductService productService = new ProductService(entityManager);//create objects of classes
+				VendorService vendorService = new VendorService(entityManager);//create objects of classes
+				
+				while(true) {
+					
+					transaction.begin();
+					System.out.println("**********MAIN OPERATIONS****************");
+					System.out.println("1. ADD CUSTOMER");
+					System.out.println("2. ADD PRODUCT");
+					System.out.println("3. Populate Vendor");
+					System.out.println("4. update Customer Record");
+					System.out.println("5. Delete Customer Record");
+					System.out.println("6. Display all Customers");
+					System.out.println("7. Display all Products");
+					System.out.println("8. Customer Buys product");
+					System.out.println("9  List of Products by Vendor");//through vendor we get product info
+					System.out.println("10 Product Information by Customer");//through customer we get product info
+					System.out.println("11 Customer Information by product");//through product id we get customer info 
+					//System.out.println("12.Process refund");
+					System.out.println("0. Exit");
+					
+					int input = sc.nextInt();
+					if(input == 0) {
+						transaction.commit();
+						break;
+				}
+					
+					switch(input) {
+					
+					case 1 :
+						Customer customer = new Customer();
+						customer=customerService.readCustomerInput(customer);
+						entityManager.persist(customer);//insert auto in database
+						System.out.println("Customer inserted in DB.");
+						transaction.commit();
+						break;
+					
+					case 2 :
+						
+						Product product = new Product();
+						product=productService.readProductInput(product);
+						entityManager.persist(product);
+						System.out.println("Product inserted in DB.");
+						transaction.commit();
+						break;
+						
+					case 3 :
+						vendorService.populate();
+						System.out.println("Vendor added....");
+						transaction.commit();
+						break;
+						
+					case 4 :
+						
+						System.out.println("Enter ID of customer you want to update:");
+						int cid = sc.nextInt();
+						Customer c = customerService.getCustomerById(cid);
+						if(c== null)
+							throw new RuntimeException("Invalid ID");
+						
+						c =customerService.readCustomerInput(c);//for update we take input again
+						customerService.updateCustomer(c);//
+						System.out.println("Employee Info updated...");
+						transaction.commit();
+						break;
+						
+					case 5:
+						System.out.println("Enter ID of employee you want to delete:");
+						cid = sc.nextInt();
+						c = customerService.getCustomerById(cid);
+						if(c == null)
+							throw new RuntimeException("Invalid ID");
+						customerService.deleteCustomer(c);
+						System.out.println("Employee deleted from DB...");
+						transaction.commit();
+					
+						break;
+						
+					case 6:
+						List<Customer> list = customerService.fetchAllCustomers();
+						System.out.println("------ All Employee Details ----\n");
+						for(Customer cus: list) {
+							System.out.print("Customer ID: " + cus.getId()+"\n");
+							System.out.print(" ||  Customer Name: " + cus.getName());
+							System.out.print(" ||  Customer Age: "+ cus.getAge());
+							System.out.print(" || Customer City: " + cus.getCity());
+						
+							System.out.println();
+						}
+						transaction.commit();
+						break;
+						
+					case 7:
+						
+						List<Product> list1 = productService.fetchAllCustomers();
+						System.out.println("------ All Product Details ----\n");
+						for(Product cus1: list1) {
+							System.out.print("Product ID: " + cus1.getId()+"\n");
+							System.out.print(" ||  Product Name: " + cus1.getName());
+							System.out.print(" ||  Product Price: "+ cus1.getPrice());
+							System.out.print(" ||  Product Vendor name " + cus1.getVendor().getName());
+						
+							System.out.println();
+						}
+						transaction.commit();
+						break;
+						
+					case 8:
+						System.out.println("Enter Customer ID:");
+						cid = sc.nextInt();
+						System.out.println("Enter Product ID :");
+						int pid = sc.nextInt();
+						
+						productService.customerBuyProduct(cid,pid);
+						System.out.println("customer Buy Product : ");
+						
+						transaction.commit();
+						break;
+						
+					case 9:
+						System.out.println("Enter vendor ID:");
+						int vid = sc.nextInt();//vendor id we get through this process
+						
+				    
+						List<Product> listProducts = productService.fetchProductByVendorId(vid);
+						System.out.println("------List of Products------");
+						listProducts.stream().forEach(p->{
+							System.out.print(" Product Name: " + p.getName());
+							System.out.print(" ||  Product Price: " +p.getPrice());
+							System.out.println(" Product Vendor : " +p.getVendor().getName());
+							System.out.println("");
+						});
+						transaction.commit();
+						break;
+						
+						
+					case 10:
+						System.out.println("Enter Customer Id :");
+					 cid =sc.nextInt();
+						 
+						 List<Product> listProducts2 = productService.fetchProductByCustomerId(cid);//fetch all products through customer id 
+						 System.out.println("------List of Products------");
+							listProducts2.stream().forEach(p->{
+								System.out.print(" Product Name: " + p.getName());
+								System.out.print(" ||  Product Price: " +p.getPrice());
+								System.out.println(" Product Vendor : " +p.getVendor().getName());
+								System.out.println("");
+							});
+							transaction.commit();
+							break;
+						
+						
+					case 11:
+						System.out.println("Enter Product ID :");
+						pid = sc.nextInt();
+						
+						List<Customer> list3 = customerService.fetchAllCustomersByProduct(pid);//fetch all customers by product id 
+						System.out.println("------ All Customer Details ----\n");
+						list3.stream().forEach(p->{
+							System.out.print(" Customer Name: " + p.getName());
+							System.out.print(" ||  Customer Age: " +p.getAge());
+							System.out.println(" Customer City : " +p.getCity());
+							System.out.println("");
+						});
+					
+						transaction.commit();
+						break;
+					
+					/*case 12: System.out.println("Enter Customer ID: ");
+					   cid = sc.nextInt();
+					
+					List<Product> list4 =productService.fetchProductByCustomerId(cid);
+					System.out.println("------ All Product Details ----\n");
+					list4.stream().forEach(p->{
+						System.out.print("Product ID: " + p.getId());
+						System.out.print(" ||  Product Name: " + p.getName());
+						System.out.print(" ||  Product Price: " +p.getPrice());
+						
+						System.out.println();
+					});
+					System.out.println("Enter Product ID: ");
+					 pid = sc.nextInt();
+					 product=productService.getProductById(pid);
+					 if(product == null)
+							throw new RuntimeException("Invalid ID");
+					 productService.deleteProduct(product);
+						System.out.println("Processed refund");
+					transaction.commit();
+					break;*/
+						
+					default : 
+						transaction.commit();
+						break;
+					
+					
+					}
+					
+				
+				
+				}
+				
+			}catch(Exception e) {
+				System.out.println(e);
+				transaction.rollback();
+				
+		
+			}
+			finally {
+				entityManager.close();
+				entityFactory.close();
+			}
+		
+		
+	}
+
+}

@@ -1,0 +1,47 @@
+package com.jpa.main.service;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
+
+import com.jpa.main.model.Product;
+
+public class ProductService {
+
+	private EntityManager entityManager;
+
+	public ProductService(EntityManager entityManager) {
+		this.entityManager = entityManager;
+	}
+
+	public Product readProduct(Product product) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<Product> fetchAllProducts() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void buyProduct(int cid, int pid) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public List<Product> fetchProductByCustomerId(int cidval) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Product getProductById(int pidval) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void deleteProduct(Product product) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

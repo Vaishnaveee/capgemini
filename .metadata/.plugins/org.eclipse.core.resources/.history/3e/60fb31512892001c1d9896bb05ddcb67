@@ -1,0 +1,13 @@
+package com.jpa.main.service;
+
+import javax.persistence.EntityManager;
+
+public class ProductService {
+
+	private EntityManager entityManager;
+
+	public ProductService(EntityManager entityManager) {
+		this.entityManager = entityManager;
+	}
+
+}

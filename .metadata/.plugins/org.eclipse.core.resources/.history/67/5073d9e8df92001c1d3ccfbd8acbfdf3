@@ -1,0 +1,84 @@
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+
+
+@Entity
+
+
+public class Customer {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)//For autoincriment values
+	private Integer id;//primary key
+	
+	
+	@Column(nullable = false)
+	private String name;
+	
+	@Column(nullable = false)
+	private int age;
+	
+	
+	private String city;
+	
+	
+	@ManyToMany(cascade = CascadeType.ALL)
+	
+	@JoinTable(
+			name = "customer_product",//primary key id product cha id la join keli
+			joinColumns = @JoinColumn(name="customer_id"),
+			inverseJoinColumns = @JoinColumn(name="product_id")//akbaar configure karneka ,product class chi primary key
+			)
+	private List<Product> product;
+	
+	
+	public Customer(Integer id, String name, int age, String city) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.age = age;
+		this.city = city;
+	}
+	public List<Product> getProduct() {
+		return product;
+	}
+	public void setProduct(List<Product> product) {
+		this.product = product;
+	}
+	public Customer() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public int getAge() {
+		return age;
+	}
+	public void setAge(int age) {
+		this.age = age;
+	}
+	public String getCity() {
+		return city;
+	}
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+}

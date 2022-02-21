@@ -1,0 +1,102 @@
+package com.jpa.main.service;
+
+import java.util.List;
+import java.util.Scanner;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
+import com.jpa.main.model.Customer;
+import com.jpa.main.model.Product;
+
+
+
+
+public class CustomerService {
+	
+	Scanner sc;
+	EntityManager entityManager=null;
+	
+	
+	
+
+	public CustomerService( EntityManager entityManager) {
+	
+		this.entityManager = entityManager;
+		sc = new Scanner(System.in);
+	}
+
+
+
+
+	public Customer readCustomerInput(Customer c) {
+		
+		System.out.println("Enter Name of Customer : ");
+		String name = sc.next();
+		c.setName(name);
+		
+		
+		System.out.println("Enter Age of Customer : ");
+		int age=sc.nextInt();
+		c.setAge(age);
+		
+		System.out.println("Enter city of Customer :");
+		String city = sc.next();
+		c.setCity(city);
+
+		return c;
+	}
+
+
+
+
+	public Customer getCustomerById(int cid) {
+		
+		return entityManager.find(Customer.class, cid);//we pass customer class if find then we get customer object
+		
+	}
+
+
+
+
+	public void updateCustomer(Customer c) {
+		
+		entityManager.persist(c);//insert data into data base 
+		
+	}
+
+
+
+
+	public void deleteCustomer(Customer c) {
+		
+		entityManager.remove(c);
+	}
+
+
+
+
+	public List<Customer> fetchAllCustomers() {
+		List<Customer> list = entityManager.createQuery("select c from Customer c", Customer.class).getResultList();
+		return list;
+
+	}
+
+
+	public List<Customer> fetchAllCustomersByProduct(int pid) {
+		
+		Query query= entityManager
+				.createQuery("select c from Customer c join c.product p where p.id=:pid", Customer.class);// we joint customer to product we use customer class to we fetch 
+		// all the customers
+		query.setParameter("pid", pid);//we set the parameters of the query.in above we only write query but in this line we pass the parameters
+		
+		return query.getResultList();
+		
+		
+	}
+
+
+
+
+	
+}
